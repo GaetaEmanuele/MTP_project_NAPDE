@@ -1,0 +1,10 @@
+# Backup automatici MATLAB
+*.asv
+
+# File temporanei di sistema
+.DS_Store
+
+# Eventuali cartelle di output / temporanee (se ne hai)
+# ad esempio:
+# output/
+# temp/
