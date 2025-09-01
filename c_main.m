@@ -54,6 +54,10 @@ for i=1:I_max
     %solve the problem in Ki_hat 
     [U_hat_i,V_hat_i] = solver(Dati,tentDependencies(i,:),U,V,acceptable_x,acceptable_time,front);
     
+    if Dati.visual_graph_3D == 'Y'
+        surface_tent_solution(acceptable_x,front,U_hat_i,V_hat_i,Dati)
+    end
+
     U{end+1} = U_hat_i;
     V{end+1} = V_hat_i;
     %t = 0:Dati.dt:1;
