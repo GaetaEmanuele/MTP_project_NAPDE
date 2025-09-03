@@ -1,4 +1,14 @@
 function [front,L] = compute_analytical_front1(x,Dati,t)
+%=======================================================================================================
+% this is the function where the map from the physical tent to reference
+% one is built
+%=======================================================================================================
+% input = - x spatial node
+%         - Dati 
+%         - t the advacing front of the tent
+% ouptu = -front : is a strcuture containing as function handle
+% delta,phi,phix,phit
+
 
     %load data
     T = Dati.T;

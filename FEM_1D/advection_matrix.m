@@ -1,4 +1,17 @@
 function Matrix = advection_matrix(Dati,x0,x1,delta,T)
+ 
+%=======================================================================================================
+% This is the function where the matrix B is built, considering the fact
+% that there are 2 types of tents (where the interval in space has lenght h
+% and where the lenght is 2h)
+%input: -Dati
+%       - x0,x1 ending node
+%       -delta = phi_top - pbi_bot
+%       -Matrix classical FEM matrix 
+%=======================================================================================================
+
+
+
     h = Dati.h;
     mu = Dati.mu;
     rho = Dati.rho;

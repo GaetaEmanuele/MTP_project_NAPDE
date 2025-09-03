@@ -1,4 +1,12 @@
 function [u0,v0] = impose_continuity1(dependence,list_U,list_V,x_hat,Dati)
+    
+%=======================================================================================================
+% This is the function where is taken the IC for all the other layer of tents 
+%=======================================================================================================
+%
+
+
+
     tol = 1e-4;
     x0 = Dati.domain(1);
     x1 = Dati.domain(2);

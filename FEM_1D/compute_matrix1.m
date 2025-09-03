@@ -10,19 +10,13 @@ function [Matrices] = compute_matrix1(Dati,Matrix,front,x,t)
 
 
     M_ = Matrix.M;
-    D_ = Matrix.D;
-    W_ = Matrix.D;
+
     N = size(M_,1);
     M = zeros(2*N,2*N);
-    D = zeros(2*N,2*N);
-    W = zeros(2*N,2*N);
+
     Sigma = zeros(2*N,2*N);
     M(1:N,1:N) = M_;
     M(N+1:end,N+1:end) = M_;
-    D(1:N,1:N) = D_;
-    W(1:N,1:N) = W_;
-    %D(N+1:end,N+1:end) = D_;
-    %W(N+1:end,N+1:end) = W_;
     
     T = Matrix.T;
 
@@ -68,7 +62,6 @@ function [Matrices] = compute_matrix1(Dati,Matrix,front,x,t)
    
     Matrices.M = M;
     Matrices.Sigma = Sigma;
-    Matrices.D = D;
-    Matrices.W = W;
+
 
 end

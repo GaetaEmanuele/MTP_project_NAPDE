@@ -1,4 +1,7 @@
 function plot_u_v(nodes,Dati,U,V,t,Neven)
+    %function used for dubug purposes where is plotted the solution from 1
+    %layer of tents
+
     x = zeros(length(U),1);
     if length(U)==Neven
         x = nodes(1,1:2:end);

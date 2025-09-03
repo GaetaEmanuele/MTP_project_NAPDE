@@ -3,19 +3,21 @@
 % TEMPLATE OF THE STRUCT DATI
 %=======================================================================================================
 %
-%  DATI= struct( 'name',              % set the name of the test 
-%                'Domain',            % set the domain [x1,x2;y1,y2]
-%                'exact_sol',         % set the exact solution
-%                'force',             % set the forcing term
-%                'grad_exact_1',      % set the first componenet of the gradient of the exact solution
-%                'grad_exact_2',      % set the second componenet of the gradient of the exact solution
-%                'fem',               % set finite element space
-%                'nqn_1D',            % number of quadrature nodes for integrals over lines
-%                'nqn_2D',            % number of quadrature nodes for integrals over elements
-%                'MeshType',          % set the elements of the mesh  'TS'
-%                'refinement_vector', % set the level of refinement for the grid
+%  DATI= struct( 
+%                'Domain',            % set the domain [x1,x2]
+%                'rho',               % set the parameter rho
+%                'mu',                % set the parameter mu
+%                'exact_sol',         % set the exact solution 
+%                'force',             % set the forcing term in space
+%                'force_time',        % set the forcing term in time
+%                'derivativet',       % v exact
+%                'derivativex',       % u exact
+%                'h',                 % discrtitization parameter in space
+%                'dt',                % local dt for each tent
+%                'T',                 % max time considered
+%                'element',           % elment used, defualt on P1 
 %                'visual_graph',      % if you want to display the graphical results ['Y','N']
-%                'print_out',         % if you want to print out the results ['Y','N']
+%                'visual_graph_3D',   % if you want to have 3D graph of the solution for each tent ['Y','N']
 %                'plot_errors'        % you want to plot the computed errors ['Y','N']
 % 
 %========================================================================================================
@@ -37,14 +39,6 @@ Dati = struct(  'domain',           [0,1],...
                ... % Definition of exact derivative
                'derivativex',     'pi *cos(pi*x).*cos(pi*t)',...    
                ... % Definition of exact derivative
-               'boundary_cond',     '0.*x',...    
-               ... % boundary condition space
-               'boundary_cond_time',     '0.*t',...    
-               ... % boundary condition time
-               'initial_cond',     'sin(pi*x)',...    
-               ... % initial condition
-               'initial_velocity',     '0.*x',...    
-               ... % initial condition
                'h',                 0.05,...   
                ... % step in space
                'dt',                  0.005,...   
@@ -55,7 +49,7 @@ Dati = struct(  'domain',           [0,1],...
                ... % element P1 or P2
                'visual_graph',      'Y',...
                ... % Visualization of the solution
-               'visual_graph_3D',      'Y',...
+               'visual_graph_3D',      'N',...
                ... % Visualization of the solution inside the single tent
                'plot_errors',       'Y' ...
                ...% Compute Errors

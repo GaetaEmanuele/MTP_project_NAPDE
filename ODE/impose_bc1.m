@@ -1,4 +1,11 @@
 function Y = impose_bc1(x,tau,Dati,front)
+    
+%=======================================================================================================
+%Here are evaluated the BC taking as input x (spatial node), tau mapped
+%time, Dati, front (function handle of the front)
+%=======================================================================================================
+
+
     x0 = Dati.domain(1);
     x1 = Dati.domain(2);
     

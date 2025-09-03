@@ -1,4 +1,9 @@
 function w = compute_advancing_front(J,Map,w_old,Nl,T,c,x)
+%=======================================================================================================
+% This is the function where the pitching scheme is implemented
+%=======================================================================================================
+
+
 index = Map(1:length(J));
 CT = 1/4;
 N = length(w_old);

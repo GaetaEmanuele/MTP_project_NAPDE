@@ -1,20 +1,15 @@
 function e = compute_error1(Dati, U, V, time)
 %---------------------------------------------------------
-% Calcola l'errore L2 combinato di u e v al tempo finale
+% evaluation of the L2 combined error of u and v
 %
 % INPUT:
-%   Dati : struct con campi
-%          - nodes      : vettore nodi globali (1 x (Ne+1))
-%          - Ne         : numero di elementi
-%          - nq         : numero punti quadratura per elemento
-%          - u_exact(x,t)
-%          - v_exact(x,t)
-%   U    : valori nodali della soluzione numerica u_h
-%   V    : valori nodali della soluzione numerica v_h
-%   time : tempo finale T
+%   Dati : struct 
+%   U    : nodal value of numerical solution u_h
+%   V    : nodal value of numerical solution v_h
+%   time : final time T
 %
 % OUTPUT:
-%   e    : errore totale sqrt( ||u-uh||^2 + ||v-vh||^2 )
+%   e    : global error sqrt( ||u-uh||^2 + ||v-vh||^2 )
 %---------------------------------------------------------
     
     t = time;
@@ -37,22 +32,22 @@ function e = compute_error1(Dati, U, V, time)
     e2_u = 0; 
     e2_v = 0;
 
-    % loop sugli elementi
+    % loop over the elment
     for K = 1:tne
         xL = x(K); 
         xR = x(K+1); 
         hK = xR - xL;
 
-        % valori nodali locali delle soluzioni numeriche
+        % nodal value of the numerical sol
         UhL = U(K);   UhR = U(K+1);
         VhL = V(K);   VhR = V(K+1);
 
-        % loop punti di quadratura
+        % loop over quadratur point
         for q = 1:length(w)
-            % mappa punto di quadratura su [xL, xR]
+            % map over [xL, xR]
             xq = ((xR - xL)/2)*xi(q) + (xR + xL)/2;
 
-            % funzioni di forma P1 locali
+            % local shape function
             phiL = (xR - xq)/hK;
             phiR = (xq - xL)/hK;
 
@@ -60,17 +55,17 @@ function e = compute_error1(Dati, U, V, time)
             uhq = UhL*phiL + UhR*phiR;
             vhq = VhL*phiL + VhR*phiR;
 
-            % soluzioni esatte
+            % exact sol
             uq = u_ex(xq, t);
             vq = v_ex(xq, t);
 
-            % contributi all'errore
+            % building the error
             e2_u = e2_u + (hK/2)*w(q) * (uq - uhq)^2;
             e2_v = e2_v + (hK/2)*w(q) * (vq - vhq)^2;
         end
     end
 
-    % errore totale
+    % total error
     e = sqrt(e2_u + e2_v);
 
 end

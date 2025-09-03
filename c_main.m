@@ -1,5 +1,20 @@
 function [sol_u,sol_v,nodes,n_even,error] = c_main(Dati)
 
+%=======================================================================================================
+% This is the main file of the project where all the overall structure is
+% conrdinated
+%=======================================================================================================
+% input = Dati the data structure containing the information necessary to
+% solve the problem
+% output = 
+%         - sol_u is the numerical flux evaluated on the free node
+%         - sol_v is the numerical velocity evaluated on the free node
+%         - nodes is the structure containing the space-time node necessary for create tents         
+%         - n_even 
+%         - error is the following error e^2 = normL2 (u-uh) ^2 + normL2
+%         (v-vh)^2
+
+
 addpath Tents
 addpath Plot
 addpath map
@@ -13,19 +28,20 @@ addpath Error
 if nargin <1
     Dati  = C_dati();
 end
+fprintf('Creating tents...\n');
 %creation of the space-time meshes
 [tents,nodes,tentDependencies,n_even,n_odd] = create_tents1(Dati);
 
-%N = (Dati.domain(2)-Dati.domain(1))/Dati.h;
-%x = linspace(Dati.domain(1),Dati.domain(2),N);
-U = {};
-V = {};
+
+
 if Dati.visual_graph == 'Y'
     C_plot(nodes,Dati);
 end
 I_max = size(tents,3);
 n_sol = size(nodes,1)-3;
 n_col = size(nodes,2);
+U = {};
+V = {};
 sol_u = {};
 sol_v = {};
 x0 = Dati.domain(1);
@@ -39,9 +55,12 @@ list_u = [];
 list_v = [];
 T =0;
 %solve the problem in each tent
+
 for i=1:I_max
     %selection of valid value since -1 is a defualt value 
-    
+    fprintf('Solving the problem inside the tents %d ...\n',i);
+
+
 
     time = tents(:,2,i);
     x_ = tents(:,1,i);
@@ -61,6 +80,9 @@ for i=1:I_max
     U{end+1} = U_hat_i;
     V{end+1} = V_hat_i;
     %t = 0:Dati.dt:1;
+    
+    fprintf('mapping back the solution of the tent %d...\n',i);
+
     [u,v] = map_solution(U_hat_i,V_hat_i,front,acceptable_x,acceptable_time,Dati);
     sol_u{end+1} = u;
     sol_v{end+1} = v;
@@ -88,6 +110,9 @@ end
 if Dati.visual_graph == 'Y'
     general_plot(n_even,n_odd,sol_u,sol_v,Dati,nodes,delta)
 end
+
+fprintf('evaluating the error...\n');
+
 
 error = compute_error1(Dati,list_u,list_v,T);
 

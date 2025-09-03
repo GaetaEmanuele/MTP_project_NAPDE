@@ -1,5 +1,19 @@
 function [tents,nodes,tentDependencies,n_even,n_odd] = create_tents1(Dati)
-    %load the data
+    
+%=======================================================================================================
+% This is the function where the tents are created
+%=======================================================================================================
+% input = Dati the data structure containing the information 
+% output =
+%       - tents all the tents created
+%       - nodes
+%       -tentDependencies the tree where is described the relation of
+%       dependecies between tents
+%       - n_even,n_odd number of tent creted in even or odd iteration
+
+
+
+   %load the data
 
     x0 = Dati.domain(1);
     xN = Dati.domain(2);
@@ -14,9 +28,9 @@ function [tents,nodes,tentDependencies,n_even,n_odd] = create_tents1(Dati)
     tents = [];
     %Aggregate the tents
     iter = 0;
-    tol = 1e-12;  % se vuoi gestire approssimazioni numeriche
+    tol = 1e-12;  
 
-    % Cerco dalla seconda riga in poi (quindi righe 2:end)
+    
     idx = find(all(abs(nodes(2:end,:) - T) < tol, 2), 1);
     Tent = zeros(4,2);
     Ncheck = n_even;

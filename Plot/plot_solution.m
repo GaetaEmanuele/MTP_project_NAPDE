@@ -1,5 +1,8 @@
 function plot_solution(acceptable_x,t,U_hat_i,V_hat_i,Dati,front)
-%plot of the velocity 
+    
+    % function where you can plot the solution inside the ith tent
+
+    %plot of the velocity 
     h = Dati.h;
     x_ = min(acceptable_x):h:max(acceptable_x);
 

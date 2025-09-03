@@ -1,4 +1,15 @@
 function general_plot(n_even,n_odd,U,V,Dati,nodes,delta)
+ %=======================================================================================================
+% This is the function where the solution uh and vh are plotted as function
+% of space 
+%input = - n_even,n_odd number of tent/free node created during even or odd
+%iteration
+% - U,V numerical solution in the free node
+%-Dati 
+%-nodes space time nodes of the tent
+%-delta = phi_top - phi_bot
+%=======================================================================================================
+
     it = 1;
     N = n_even; 
 

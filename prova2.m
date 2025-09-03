@@ -6,6 +6,7 @@ Dati = C_dati();
 h = Dati.h;
 h_vec = [h,h/2,h/4];
 Dati.visual_graph = 'N';
+Dati.visual_graph_3D = 'N';
 
 error_vec = zeros(size(h_vec));
 for i = 1:length(h_vec)

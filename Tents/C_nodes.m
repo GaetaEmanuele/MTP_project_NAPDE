@@ -1,4 +1,10 @@
 function [nodes,n_even,n_odd] = C_nodes(x,T,c,N)
+ %=======================================================================================================
+% This is the function where the space time node are created
+%=======================================================================================================
+% input = x spatial node, T max time,c speed of propagation
+
+
     Jodd = x(2:2:end);
     Jeven = x(1:2:end);
     n_even = ceil(length(x)/2)  ;

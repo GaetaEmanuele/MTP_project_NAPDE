@@ -1,6 +1,18 @@
 function [U,V]=BE_wave_eq(Dati,x,dependence,Matrix,list_U ,list_V,front,t_hat)
-    
-    T = 1; %T is equal 1 indeed RK is applied in K_i_hat so the maximum time is 1
+
+%=======================================================================================================
+% This is the main function for the Backward Euler method
+%input: -Dati
+%       - x spatial domain
+%       -dependece where the actual tent takes the IC 
+%       -Matrix classical FEM matrix 
+%       -List_U,List_V list of the previus solution
+%       -front
+%       - t_hat physical time
+%=======================================================================================================
+
+
+    T = 1; %T 
     dt = Dati.dt; 
     % initialization
     t = 0:dt:T; % Vettore temporale
@@ -11,13 +23,13 @@ function [U,V]=BE_wave_eq(Dati,x,dependence,Matrix,list_U ,list_V,front,t_hat)
     x1 = Dati.domain(2);
     % initial condition
     if sum((t_hat==0))>=2
-        [u0,v0] = impose_ic(Dati,front,x,Matrix);
+        [u0,v0] = impose_ic(Dati,front,x);
     else 
         [u0,v0] = impose_continuity1(dependence,list_U,list_V,x,Dati);
     end
 
     Y = [u0; v0]; 
-    %Pe = Dati.rho*mean(u0)*Dati.h/(2*Dati.mu)
+    
     % preallocation of the buffer
     U = zeros(length(u0), num_steps);
     V = zeros(length(v0), num_steps);
@@ -35,14 +47,8 @@ function [U,V]=BE_wave_eq(Dati,x,dependence,Matrix,list_U ,list_V,front,t_hat)
         
         Matrices = compute_matrix1(Dati,Matrix,front,x,tii);
         M = Matrices.M;
-        D = Matrices.D;
-        W = Matrices.W;
-        eps =  dt*0.5*Dati.h  * sqrt((D*Yi)'*W*(D*Yi));
-        eps_min = 1e-4;
-        eps_max = 1e-2;
-        eps = max(min(eps, eps_max), eps_min);
+       
 
-        %eps = 0;
         Sigma = Matrices.Sigma;
         I = numerical_flux(front,Dati,x);
         A = M + dt*(Sigma-I);
@@ -50,13 +56,13 @@ function [U,V]=BE_wave_eq(Dati,x,dependence,Matrix,list_U ,list_V,front,t_hat)
         Y0 = zeros(length(Yi),1);
         Y1 = zeros(length(Yi),1);
         if sum(x==x0)>0
-            Ybc = impose_bc(x,tii,Dati,front);
+            Ybc = impose_bc1(x,tii,Dati,front);
             Y0(1) = Ybc(1);
             Y0(length(u0)) = Yi(dimx);
             Y0(length(u0)+1) = Ybc(dimx+1);
             Y0(end) = Yi(end);
         elseif sum(x==x1)>0
-            Ybc = impose_bc(x,tii,Dati,front);
+            Ybc = impose_bc1(x,tii,Dati,front);
             Y0(1) = Yi(1);
             Y0(length(u0)) = Ybc(dimx);
             Y0(length(u0)+1) = Yi(dimx+1);

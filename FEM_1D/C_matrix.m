@@ -1,38 +1,48 @@
 function [Matrices,x]=C_matrix(Dati,x_0,x_1,delta)
+    
+%=======================================================================================================
+% This is the function where the Mass matrix and the matrix B are built
+%input: -Dati
+%       - x_0,x_1 the ending node
+%       -delta = phi_top - phi_bot 
+%outpu: -Matrices (strcuture containing the matrix M,B)
+%=======================================================================================================
+
+
+
     x0 = x_0;
     x1 = x_1;
     h = Dati.h;
     x_temporary = x0:h:x1;
     tne = length(x_temporary)-1;
+    %creating mesh
     [ ~, lnn, nln, el, connectivity, tnn, x ] = CreateMesh( Dati.element, tne, x0, x1);
     
+    %basis function
     [basis] = shape_basis(Dati.element);
-
+    
+    %quadrature point
     [xq, W_1D] = Quadrature(nln);
     xq = sort(xq);
+    %evaluation basis function
     [dphiq,Deriv] = evalshape(basis,xq);
 
-    A = sparse(tnn,tnn);
-    D = sparse(tnn,tnn);
+    
     M = sparse(tnn,tnn);
-    W = diag(W_1D);
-    f = sparse(tnn,1);
+    
     nq = length(W_1D);
     %BJ = Jacobian(xq,nq);
 
     % Initialization of Matrices
-    Matrices.A = A;
     Matrices.M = M;
-    Matrices.f = f;
 
     for ie=1:tne
         iglo = connectivity(1:nln,ie);
 
-        K_loc = zeros(nln,nln);
+        
         M_loc = zeros(nln,nln);
-        D_loc = zeros(nln,nln);
-        f_loc = zeros(nln,1);
-        fun = inline(Dati.force,'x');
+        
+        
         x_ = map(iglo,xq,x);
         for q=1:nq
             %B = BJ(q);
@@ -40,26 +50,18 @@ function [Matrices,x]=C_matrix(Dati,x_0,x_1,delta)
                 deriv_i = Deriv(1,i);
                 phi_i = dphiq(i,q);
                 x_q = x(iglo(q));
-                f_loc(i) = f_loc(i) + (h/2)*fun(x_q)*phi_i*W_1D(q);
+                
                 for j=1:nln
                     deriv_j = Deriv(1,j);
                     phi_j = dphiq(j,q);
-                    K_loc(i,j) = K_loc(i,j) + h/2*(phi_i*deriv_j)*W_1D(q);
                     M_loc(i,j) = M_loc(i,j) + (h/2)*(phi_i*phi_j)*W_1D(q);
-                    D_loc(i,j) = D_loc(i,j) + (2/h)*(deriv_i*deriv_j)*W_1D(q);
                 end
             end
         end
-        A(iglo,iglo) = A(iglo,iglo) + K_loc ;
         M(iglo,iglo) = M(iglo,iglo) + M_loc;
-        D(iglo,iglo) = D(iglo,iglo) + D_loc;
-        f(iglo) = f(iglo) + f_loc;
     end
     % store the matrices
-    Matrices.A = A;
     Matrices.M = M;
-    Matrices.W = W;
-    Matrices.D = D;
     T = sparse(tnn,tnn);
     Matrix = advection_matrix(Dati,x0,x1,delta,T);
     Matrices.T = Matrix.T;

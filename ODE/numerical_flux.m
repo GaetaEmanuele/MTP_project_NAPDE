@@ -1,4 +1,13 @@
 function inflow = numerical_flux(front,Dati,x)
+    
+%=======================================================================================================
+% Here is built the numerical Flux term
+%input: - front strcuture of function handle that describe the map
+%       - Dati
+%       - x spatial coordiante
+%=======================================================================================================
+%
+
     delta = front.delta;
     phixt = front.phixt;
     x0 = Dati.domain(1);

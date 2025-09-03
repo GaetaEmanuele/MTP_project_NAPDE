@@ -1,4 +1,11 @@
 function C_plot(nodes,Dati)
+
+%=======================================================================================================
+% This is the function where the space-time mesh (tents) are seen from a
+% graphycal point of view
+%=======================================================================================================
+%
+
 figure()
 x = [Dati.domain(1),Dati.domain(1)];
 y = [0,Dati.T];

@@ -1,4 +1,17 @@
 function [u,v] = map_solution(U_hat_i,V_hat_i,front,x,t,Dati)
+
+%=======================================================================================================
+% This is the function where the solution is taken in the free node at last
+% time (tau =1) and mapped in the physical domain
+%input: -U_hat_i,V_hat_i 
+%       - front (function handle of the front)
+%       -x spatial coordinate 
+%       -t physical time
+%       -Dati
+%=======================================================================================================
+
+
+
 delta = front.delta;
 phix = front.phix;
 n = size(U_hat_i,1);

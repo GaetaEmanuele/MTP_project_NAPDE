@@ -1,5 +1,17 @@
 function [U,V]=runge_kutta_wave_eq(Dati,x,dependence,Matrix,list_U ,list_V,front,t_hat)
     
+%=======================================================================================================
+% This is the main function for the Rk4 method
+%input: -Dati
+%       - x spatial domain
+%       -dependece where the actual tent takes the IC 
+%       -Matrix classical FEM matrix 
+%       -List_U,List_V list of the previus solution
+%       -front
+%       - t_hat physical time
+%=======================================================================================================
+
+
     T = 1; %T is equal 1 indeed RK is applied in K_i_hat so the maximum time is 1
     dt = Dati.dt; 
     % initialization
@@ -11,14 +23,13 @@ function [U,V]=runge_kutta_wave_eq(Dati,x,dependence,Matrix,list_U ,list_V,front
     x1 = Dati.domain(2);
     % initial condition
     if sum((t_hat==0))>=2
-        [u0,v0] = impose_ic(Dati,front,x,Matrix);
+        [u0,v0] = impose_ic(Dati,front,x);
     else 
         [u0,v0] = impose_continuity1(dependence,list_U,list_V,x,Dati);
     end
 
     Y = [u0; v0]; 
-    %Pe = Dati.rho*mean(u0)*Dati.h/(2*Dati.mu)
-    % preallocation of the buffer
+    
     U = zeros(length(u0), num_steps);
     V = zeros(length(v0), num_steps);
     
